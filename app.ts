@@ -9,13 +9,15 @@ import "reflect-metadata"
 import {injectable,inject} from "inversify";
 import {TYPES} from "./types/types";
 import {UsersController} from "./controllers/users.controller";
+import {AuthController} from "./controllers/auth.controllers";
 @injectable()
 export class App {
     private app: Express
     private readonly port: string | number
     private readonly cors;
 
-    constructor(@inject(TYPES.UsersController) private usersController:UsersController) {
+    constructor(@inject(TYPES.UsersController) private usersController:UsersController,
+                @inject(TYPES.AuthController) private authController: AuthController) {
         this.app = express()
         this.port = process.env.PORT! || 3003
         this.cors = cors
@@ -32,6 +34,7 @@ export class App {
     }
     private useRoutes(){
         this.app.use('/api/v1/',this.usersController.Router())
+        this.app.use('/api/v1/auth',this.authController.Router())
     }
     private async connectToDb() {
         await mongoose.connect(process.env.DB_URI!, {
