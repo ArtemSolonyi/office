@@ -2,7 +2,6 @@ import {Request, Response, NextFunction} from "express";
 import jwt, {Jwt, JwtPayload} from "jsonwebtoken";
 
 
-
 interface JwtPayLoads {
     userId: string;
 }
@@ -15,6 +14,8 @@ export class AuthMiddlewares {
                 const verifiedToken = await jwt.verify(accessToken!, process.env.SECRET_KEY_ACCESS_JWT!) as Jwt & JwtPayLoads & void
                 req.body.userId = verifiedToken.userId
                 next()
+            } else {
+                return res.status(401).json({"message": "You are unauthorized"})
             }
         } catch (e) {
             return res.status(401).json({"message": e})

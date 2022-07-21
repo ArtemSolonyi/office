@@ -5,7 +5,7 @@ import {TYPES} from "../types/types";
 import {AuthService} from "../services/auth.service";
 import "reflect-metadata"
 import {AuthMiddlewares} from "../middlewares/checkAuth";
-import {validator} from "../validations/validator";
+import {validator} from "../validator/validator";
 import {UserRoles} from "../models/User";
 
 @injectable()
@@ -14,7 +14,7 @@ export class AuthController {
     }
 
     private registration = async (req: Request<{}, {}, UserDto>, res: Response): Promise<Response> => {
-        const result = await this.authService.createConfirmedUser(req.body,UserRoles.REGULAR)
+        const result = await this.authService.createConfirmedUser(req.body, UserRoles.REGULAR)
         return res.status(200).json(result)
     }
     private login = async (req: Request<{}, {}, UserDto>, res: Response): Promise<Response> => {
@@ -25,7 +25,7 @@ export class AuthController {
         const result = await this.authService.refreshSecure(req.body)
         return res.status(200).json(result)
     }
-    private logout = async (req: Request<{}, {}, {userId:string}>, res: Response): Promise<Response> => {
+    private logout = async (req: Request<{}, {}, { userId: string }>, res: Response): Promise<Response> => {
         const result = await this.authService.logout(req.body.userId)
         return res.status(200).json(result)
     }

@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import jwt from 'jsonwebtoken'
-import { TokenModel} from "../models/Token";
+import {TokenModel} from "../models/Token";
 
 export class TokenService {
-    private readonly userId:mongoose.Types.ObjectId | undefined
+    private readonly userId: mongoose.Types.ObjectId | undefined
     private _accessToken: string
     private _refreshToken: string
 
-    constructor(userId:mongoose.Types.ObjectId|undefined) {
+    constructor(userId: mongoose.Types.ObjectId | undefined) {
         this.userId = userId
     }
 
@@ -30,17 +30,20 @@ export class TokenService {
             refreshToken: this._refreshToken
         })
     }
-    public get accessToken(){
+
+    public get accessToken() {
         return this._accessToken
     }
-    public get refreshToken(){
+
+    public get refreshToken() {
         return this._refreshToken
     }
+
     public async updateTokens() {
         await this.groupingCreatedTokens()
         await TokenModel.findOneAndUpdate({userId: this.userId}, {
             accessToken: this._accessToken,
-            refreshToken:this._refreshToken
+            refreshToken: this._refreshToken
         },)
 
     }
