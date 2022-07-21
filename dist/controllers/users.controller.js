@@ -14,6 +14,7 @@ import { injectable, inject } from 'inversify';
 import { TYPES } from "../types/types";
 import { UserService } from "../services/users.service";
 import express from "express";
+import { AuthMiddlewares, } from "../middlewares/checkAuth";
 let UsersController = class UsersController {
     constructor(userService) {
         this.userService = userService;
@@ -21,10 +22,15 @@ let UsersController = class UsersController {
             const result = await this.userService.getUsers(req.body);
             return res.status(200).json(result);
         };
+        this.changeRegularOnBoss = async (req, res) => {
+            const result = await this.userService.addSubordinateToUser(req.body);
+            return res.status(200).json(result);
+        };
     }
     Router() {
         const router = express.Router();
-        router.get('/users', this.getUsers);
+        router.get('/users', AuthMiddlewares.checkAuth, this.getUsers)
+            .post('/change', AuthMiddlewares.checkAuth, this.changeRegularOnBoss);
         return router;
     }
 };

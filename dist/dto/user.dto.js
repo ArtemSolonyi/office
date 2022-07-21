@@ -12,7 +12,7 @@ export class UserDto {
 }
 __decorate([
     IsString(),
-    MinLength(7),
+    MinLength(4),
     __metadata("design:type", String)
 ], UserDto.prototype, "username", void 0);
 __decorate([
