@@ -5,7 +5,7 @@
   "type": "module",
   "main": "./dist/main.js",
   "scripts": {
-    "start": " --experimental-modules --es-module-specifier-resolution=node ./dist/main.js",
+    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node ./dist/main.js",
     "postinstall": "tsc"
   },
   "keywords": [],
