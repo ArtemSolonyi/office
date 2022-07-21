@@ -4,7 +4,7 @@ import {User} from "../services/user.service";
 
 import {Result} from "../utils/result";
 
-export async function findOrCreateUser(body: UserDto, role: UserRoles): Promise<Result<TUser, string>> {
+export async function createUser(body: UserDto, role: UserRoles): Promise<Result<TUser, string>> {
     const candidateUsername = await UserModel.findOne({username: body.username})
     if (candidateUsername) {
         return {ok: false, error: "Username is already exist"}

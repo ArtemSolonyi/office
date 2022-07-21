@@ -14,7 +14,6 @@ export class AuthController {
     }
 
     private registration = async (req: Request<{}, {}, UserDto>, res: Response): Promise<Response> => {
-        console.log(req.body.username)
         const result = await this.authService.createConfirmedUser(req.body,UserRoles.REGULAR)
         return res.status(200).json(result)
     }

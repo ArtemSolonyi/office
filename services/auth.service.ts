@@ -4,13 +4,14 @@ import {TUser, UserModel, UserRoles} from "../models/User";
 import {TokenService} from "./token.service";
 import bcrypt from "bcryptjs";
 import {ITokenType, TokenModel} from "../models/Token";
-import {findOrCreateUser} from "../factories/user.factory";
+import {createUser} from "../factories/user.factory";
 
 @injectable()
 export class AuthService {
     public async createConfirmedUser(body: UserDto, role: UserRoles) {
-        const userResult = await findOrCreateUser(body, role)
+        const userResult = await createUser(body, role)
         if (userResult.ok) {
+            await UserModel.findOneAndUpdate({role: UserRoles.ADMIN}, {$push: {subordinates: userResult.value._id}})
             const token = new TokenService(userResult.value._id)
             await token.tokensForRegister()
             return this._getInfoAboutUser(userResult.value, token)
